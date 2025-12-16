@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deep Fake Radar</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background:
+                radial-gradient(circle at top left, #4facfe, transparent 45%),
+                radial-gradient(circle at bottom right, #43e97b, transparent 45%),
+                linear-gradient(135deg, #141E30, #243B55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            width: 90%;
+            max-width: 1000px;
+            height: 520px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL */
+        .left {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .left h1 {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4facfe, #43e97b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .left p {
+            font-size: 15px;
+            opacity: 0.85;
+            margin-bottom: 30px;
+        }
+
+        /* FILE INPUT */
+        input[type="file"] {
+            width: 100%;
+            min-height: 60px;
+            padding: 18px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.25);
+            border: 2px dashed rgba(255,255,255,0.35);
+            border-radius: 18px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="file"]::-webkit-file-upload-button {
+            background: linear-gradient(135deg, #4facfe, #43e97b);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 12px;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, #4facfe, #43e97b);
+            cursor: pointer;
+            color: #08351c;
+            box-shadow: 0 12px 30px rgba(67,233,123,0.45);
+        }
+
+        /* RIGHT PANEL */
+        .right {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.15);
+        }
+
+        video {
+            width: 100%;
+            max-height: 260px;
+            border-radius: 16px;
+            display: none;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 18px 26px;
+            border-radius: 18px;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            width: 100%;
+        }
+
+        .real {
+            background: linear-gradient(135deg, rgba(67,233,123,0.3), rgba(0,230,118,0.15));
+            color: #43e97b;
+            box-shadow: 0 0 22px rgba(67,233,123,0.45);
+        }
+
+        .fake {
+            background: linear-gradient(135deg, rgba(255,107,107,0.3), rgba(255,82,82,0.15));
+            color: #ff6b6b;
+            box-shadow: 0 0 22px rgba(255,107,107,0.45);
+        }
+
+        .confidence-text {
+            font-size: 14px;
+            margin-top: 6px;
+            opacity: 0.9;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 16px;
+            font-size: 12px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT -->
+    <div class="left">
+        <h1>Deep Fake Radar</h1>
+        <p>Seeing Beyond the Fake with Artificial Intelligence</p>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="video" accept=".mp4,.avi,.mov" required onchange="previewVideo(event)">
+            <button type="submit">Analyze Video</button>
+        </form>
+
+        <footer>Final Year Project • AI & Deep Learning</footer>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+        <video id="videoPlayer" controls></video>
+
+        {% if result %}
+        <div class="result {{ 'fake' if result == 'FAKE' else 'real' }}">
+            {{ result }}
+            <div class="confidence-text">
+                Confidence: {{ confidence }}%
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+    function previewVideo(event) {
+        const video = document.getElementById("videoPlayer");
+        video.src = URL.createObjectURL(event.target.files[0]);
+        video.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
+
+
+
